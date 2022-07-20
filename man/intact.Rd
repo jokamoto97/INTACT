@@ -2,9 +2,18 @@
 % Please edit documentation in R/intact.R
 \name{intact}
 \alias{intact}
-\title{Compute the posterior probability that a gene may be causal, given a gene's TWAS scan z-score and colocalization probability.}
+\title{Compute the posterior probability that a gene may be causal, given a gene's TWAS scan z-score (or Bayes factor) and colocalization probability.}
 \usage{
-intact(GLCP_vec, prior_fun, z_vec, t = NULL, K = c(1, 2, 4, 8, 16))
+intact(
+  GLCP_vec,
+  prior_fun,
+  z_vec = NULL,
+  t = NULL,
+  D = NULL,
+  K = c(1, 2, 4, 8, 16),
+  twas_priors = pi1_fun(z_vec = z_vec, lambda = 0.5),
+  twas_BFs = NULL
+)
 }
 \arguments{
 \item{GLCP_vec}{A vector of colocalization probabilities for the genes of interest}
@@ -16,16 +25,32 @@ Options are linear, step, expit, and hybrid.}
 genes must match GLCP_vec.}
 
 \item{t}{A hard threshold for the GLCP. Values below this number will be shrunk to zero.
-This argument is used in the user-specified prior function.}
+This argument is used in the user-specified prior function. Default value for the step
+prior is 0.5. Default value is 0.05 for all other prior functions.}
+
+\item{D}{A curvature shrinkage parameter. Lower values of D will result in a steeper curve.
+Default is 0.1. This parameter should only be specified if the user selects the expit or hybrid
+prior function and does not wish to use the default value.}
 
 \item{K}{A vector of values over which Bayesian model averaging is performed.}
+
+\item{twas_priors}{An optional vector of user-specified gene-specific TWAS priors.
+If no input is supplied, INTACT computes a scalar prior using the TWAS data
+(see the corresponding manuscript for more details).}
+
+\item{twas_BFs}{A vector of TWAS Bayes factors for the genes of interest. This is an alternative
+option if the user wishes to directly specify Bayes factors instead of computing them from
+TWAS scan z-scores.}
 }
 \value{
 The vector of posteriors.
 }
 \description{
-Compute the posterior probability that a gene may be causal, given a gene's TWAS scan z-score and colocalization probability.
+Compute the posterior probability that a gene may be causal, given a gene's TWAS scan z-score (or Bayes factor) and colocalization probability.
 }
 \examples{
-intact(GLCP_vec=simdat$GLCP, prior_fun=linear, z_vec = simdat$TWAS_z,t = 0.05)
+intact(GLCP_vec=simdat$GLCP, prior_fun=linear, z_vec = simdat$TWAS_z)
+intact(GLCP_vec=simdat$GLCP, prior_fun=expit, z_vec = simdat$TWAS_z,t = 0.02,D = 0.09)
+intact(GLCP_vec=simdat$GLCP, prior_fun=step, z_vec = simdat$TWAS_z,t = 0.49)
+intact(GLCP_vec=simdat$GLCP, prior_fun=hybrid, z_vec = simdat$TWAS_z,t = 0.49,D = 0.05)
 }

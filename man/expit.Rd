@@ -6,12 +6,16 @@
 integration procedure. There are four prior function options, including expit, linear,
 step, and expit-linear hybrid.}
 \usage{
-expit(GLCP, t = NULL, u = 1)
+expit(GLCP, t = 0.05, D = 0.1, u = 1)
 }
 \arguments{
 \item{GLCP}{A gene colocalization probability}
 
-\item{t}{A hard threshold for the GLCP. Values below this number will be shrunk to zero.}
+\item{t}{A hard threshold for the GLCP. Values below this number will be shrunk to zero.
+Default is 0.05.}
+
+\item{D}{A curvature shrinkage parameter. Lower values of D will result in a steeper curve.
+Default is 0.1}
 
 \item{u}{A factor between 0 and 1 by which the prior function is scaled.}
 }

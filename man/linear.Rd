@@ -6,12 +6,13 @@
 evidence integration procedure. There are four prior function options, including expit,
 linear, step, and expit-linear hybrid.}
 \usage{
-linear(GLCP, t = NULL, u = 1)
+linear(GLCP, t = 0.05, u = 1)
 }
 \arguments{
 \item{GLCP}{A gene colocalization probability}
 
-\item{t}{A hard threshold for the GLCP. Values below this number will be shrunk to zero.}
+\item{t}{A hard threshold for the GLCP. Values below this number will be shrunk to zero.
+Default is 0.05.}
 
 \item{u}{A factor between 0 and 1 by which the prior function is scaled.}
 }
@@ -25,4 +26,5 @@ linear, step, and expit-linear hybrid.
 }
 \examples{
 linear(0.2, 0.05, 1)
+linear(c(0.01,0.2,0.9))
 }

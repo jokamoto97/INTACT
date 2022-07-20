@@ -7,27 +7,35 @@
 intactGSE(
   gene_data,
   prior_fun,
+  t = NULL,
+  D = NULL,
   gene_sets,
-  t = 0.05,
   sig_lev = 0.05,
   SE_type = "NDS",
   boot_rep = NULL
 )
 }
 \arguments{
-\item{gene_data}{A dataframe containing gene names and corresponding colocalization
+\item{gene_data}{A data frame containing gene names and corresponding colocalization
 probabilities and TWAS z-scores for each gene. Column names should be "gene", "GLCP",
-and "TWAS_z'}
+and "TWAS_z'. If the user wishes to specify TWAS Bayes factors instead of z-scores,
+use the column name TWAS_BFs. If the user wishes to specify gene-specific TWAS priors,
+use the column name TWAS_priors.}
 
 \item{prior_fun}{A function to transform a colocalization probability into a prior.
 Options are linear, step, expit, and hybrid.}
 
+\item{t}{A hard threshold for the GLCP. Values below this number will be shrunk to zero.
+This argument is used in the user-specified prior function. Default value for the step
+prior is 0.5. Default value is 0.05 for all other prior functions.}
+
+\item{D}{A curvature shrinkage parameter. Lower values of D will result in a steeper curve.
+Default is 0.1. This parameter should only be specified if the user selects the expit or hybrid
+prior function and does not wish to use the default value.}
+
 \item{gene_sets}{A named list of gene sets for which enrichment is to be estimated.
 List items should be character vectors of gene IDs. Gene ID format should match the
  gene column in gene_data.}
-
-\item{t}{A hard threshold for the GLCP. Values below this number will be shrunk to zero.
-This argument is used in the user-specified prior function.}
 
 \item{sig_lev}{A significance threshold for gene set enrichment hypothesis testing.}
 
@@ -45,4 +53,7 @@ Perform gene set enrichment estimation and inference, given TWAS scan z-scores a
 }
 \examples{
 intactGSE(gene_data = simdat,prior_fun = linear,gene_sets = gene_set_list)
+intactGSE(gene_data = simdat,prior_fun = step,t = 0.45,gene_sets = gene_set_list)
+intactGSE(gene_data = simdat,prior_fun = expit,t = 0.08,D = 0.08, gene_sets = gene_set_list)
+intactGSE(gene_data = simdat,prior_fun = hybrid,t = 0.08,D = 0.08, gene_sets = gene_set_list)
 }
