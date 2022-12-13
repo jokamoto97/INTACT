@@ -1,0 +1,111 @@
+---
+title: "INTACT: Integrate TWAS and Colocalization Analysis for Gene Set Enrichment Analysis"
+shorttitle: "INTACT"
+author:
+- name: Jeffrey Okamoto
+  affiliation: 
+  - &id Department of Biostatistics, University of Michigan
+  email: jokamoto@umich.edu
+- name: Xiaoquan Wen
+  email: xwen@umich.edu
+  affiliation: *id
+abstract: >
+  This package integrates colocalization probabilites from 
+    colocalization analysis with transcriptome-wide association study (TWAS) scan
+    summary statistics to implicate genes that may be biologically relevant to a 
+    complex trait. Given gene set annotations, this package can estimate gene set
+    enrichment using posterior probabilities from the TWAS-colocalization 
+    integration step.
+package: INTACT
+output: 
+  BiocStyle::pdf_document
+vignette: >
+  %\VignetteIndexEntry{INTACT: Integrate TWAS and Colocalization Analysis for Gene Set Enrichment}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}  
+toc_float: true
+---
+
+# Installation
+
+To install this package, run the following code chunk (in R 3.6 or later):
+
+```{r,eval=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("INTACT")
+library(INTACT)
+```
+
+# Methodology Reference
+
+For a comprehensive description of the probabilistic framework behind INTACT please refer to: 
+
+Okamoto, Jeffrey, et al. "Probabilistic integration of transcriptome-wide association studies and colocalization analysis prioritizes molecular pathways of complex traits." bioRxiv (2022).
+
+# Included Data Sets
+
+To illustrate the functionality of the ```INTACT``` package, we include a simulated data set ```simdat```. See the methodology reference for an explanation of the simulation design. The data is organized as a 1197 row by 3 column data frame, where rows correspond to genes, the GLCP column provides  gene-level colocalization probabilities, and the TWAS_z column provides TWAS scan z-scores. 
+
+Additionally, we include a simulated gene set list ```gene_set_list```, which contains two gene sets. The first gene set has 503 gene members and is significantly enriched among the genes included in ```simdat```, based on the probabilistic INTACT output. The second gene set has 200 gene members and is not enriched among the ```simdat``` genes. We include ```gene_set_list``` to show how to perform gene set enrichment estimation using INTACT-GSE.
+
+# INTACT: Integrating TWAS Scan and Colocalization Analysis Results
+
+The first main functionality of this package is integrating results from a transcriptome-wide
+association study (TWAS) scan and a colocalization analysis. The TWAS scan results must 
+be in the form of gene-level z scores, and the colocalization analysis results should be 
+in the form of gene-level colocalization probabilities. These are provided as output by
+most popular TWAS and colocalization methods.
+
+Below, we include an example of how to use INTACT to integrate TWAS scan and 
+colocalization results for a simulated data set ```simdat```. 
+
+```{r,eval=F}
+intact(GLCP_vec=simdat$GLCP, z_vec = simdat$TWAS_z)
+```
+
+The ```intact``` function takes a vector of gene-level colocalization probabilites ```GLCP_vec``` and TWAS scan z-scores ```z_vec```. It outputs gene-level posterior probabilities of putative causality. The example included above uses default settings for the prior function and truncation threshold $t$ (```prior_fun = linear``` and ```t=0.05```). There are three additional prior functions implemented in the ```INTACT``` software, including ```expit```, ```step```, and ```hybrid```. The ```expit``` and ```hybrid``` options have an additional curvature shrinkage parameter ```D```, with a default value of 0.1. The default truncation parameter value for the step prior function is 0.5, while the default value is 0.05 for all other prior functions. Below are three additional examples of how to integrate the TWAS z scores and colocalization probabilies from the simulated data using different prior function, truncation threshold, and curvature shrinkage settings:
+
+
+```{r,eval=F}
+intact(GLCP_vec=simdat$GLCP, prior_fun=expit, z_vec = simdat$TWAS_z,
+       t = 0.02,D = 0.09)
+intact(GLCP_vec=simdat$GLCP, prior_fun=step, z_vec = simdat$TWAS_z,
+       t = 0.49)
+intact(GLCP_vec=simdat$GLCP, prior_fun=hybrid, z_vec = simdat$TWAS_z,
+       t = 0.49,D = 0.05)
+```
+
+If the user wishes to specify TWAS Bayes factors instead of z-scores, they can do so through the argument ```twas_BFs```. The Bayes factors should be a numeric vector with genes in the same order as the colocalization probabilities vector. If the user wishes to specify gene-specific TWAS priors, they can do so through the argument ```twas_priors```. If no input is supplied, INTACT computes a scalar prior using the TWAS data (see the methodology reference for more details).
+
+# INTACT-GSE: Gene Set Enrichment Estimation Using INTACT results
+
+The ```INTACT``` package provides the ```intactGSE``` function to perform gene set enrichment estimation and inference using integrated TWAS scan z-scores and colocalization probabilities. This function requires a data frame ```gene_data``` containing gene names and corresponding colocalization probabilities and TWAS z-scores for each gene. Column names should be "gene", "GLCP", and "TWAS_z'. If the user wishes to specify TWAS Bayes factors instead of z-scores, use the column name "TWAS_BFs". If the user wishes to specify gene-specific TWAS priors, use the column name "TWAS_priors".
+
+In addition to ```gene_data```, the user must provide a list of gene sets ```gene_sets```. The format of ```gene_sets``` must match the included example ```gene_set_list```: it must named list of gene sets for which enrichment is to be estimated. List items should be character vectors of gene IDs. Gene ID format should match the gene column in ```gene_data```.
+
+The user can specify the same prior-related arguments as in the ```intact``` function, including    ```prior_fun```,  ```t```, and ```D```(only when the prior function is specified as ```expit``` or ```hybrid```). 
+
+The user can specify the method by which the standard error of the enrichment estimate is computed. Options include a numerical differentiation of the score function (default): ```NDS```; a profile likelihood approach: ```profile_likelihood```, and bootstrapping: ```bootstrap```. For hypothesis testing, the user can specify a significance threshold, which is 0.05 by default. 
+
+An example of how to estimate gene set enrichment in the gene sets provided in ```gene_set_list``` (using default settings) is shown below:
+
+```{r}
+INTACT::intactGSE(gene_data = INTACT::simdat,gene_sets = INTACT::gene_set_list)
+```
+
+The output of ```intactGSE``` includes one row per gene set and eight columns: the gene set name, the enrichment parameter $\alpha_1$ estimate, the enrichment parameter estimate standard error, the z-score, the p-value, the left and right CIs, and the convergence flag (if CONVERGED = 1, then the enrichment estimation algorithm converged. If not, CONVERGED = 0). Some data sets are not informative for gene set enrichment estimation; in this case, the algorithm will fail to converge. We emphasize that failure of the algorithm to converge does not provide information regarding the enrichment (or lack thereof) for a given gene set.
+
+
+Finally, we include three additional examples of how to estimate enrichment for the same data sets using non-default prior parameters:
+
+```{r}
+INTACT::intactGSE(gene_data = INTACT::simdat,prior_fun = INTACT::step,
+                  t = 0.45,gene_sets = INTACT::gene_set_list)
+INTACT::intactGSE(gene_data = INTACT::simdat,prior_fun = INTACT::expit,
+                  t = 0.08,D = 0.08, gene_sets = INTACT::gene_set_list)
+INTACT::intactGSE(gene_data = INTACT::simdat,prior_fun = INTACT::hybrid,
+                  t = 0.08,D = 0.08, gene_sets = INTACT::gene_set_list)
+```
+

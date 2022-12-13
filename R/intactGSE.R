@@ -24,13 +24,13 @@
 #' (1-sig_lev)\% CI limits, and convergence indicator for each gene set in gene_sets.
 #' @export
 #' @examples
-#' intactGSE(gene_data = simdat,prior_fun = linear,gene_sets = gene_set_list)
+#' intactGSE(gene_data = simdat,gene_sets = gene_set_list)
 #' intactGSE(gene_data = simdat,prior_fun = step,t = 0.45,gene_sets = gene_set_list)
 #' intactGSE(gene_data = simdat,prior_fun = expit,t = 0.08,D = 0.08, gene_sets = gene_set_list)
 #' intactGSE(gene_data = simdat,prior_fun = hybrid,t = 0.08,D = 0.08, gene_sets = gene_set_list)
 
 
-intactGSE <- function(gene_data,prior_fun,t = NULL,D = NULL,gene_sets,sig_lev=0.05,SE_type="NDS",boot_rep=NULL){
+intactGSE <- function(gene_data,prior_fun = linear,t = NULL,D = NULL,gene_sets,sig_lev=0.05,SE_type="NDS",boot_rep=NULL){
 
   rst <- data.frame()
 

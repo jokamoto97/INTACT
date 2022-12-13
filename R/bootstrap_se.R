@@ -18,12 +18,12 @@ enrich_bootstrap_se <- function(pprobs, d_vec, reps = 100){
 
   samples <- replicate(n = 100,
                        expr = sample(seq(length(pprobs)),
-                                     size = length(pprobs), replace = TRUE))
+                                     size = length(pprobs), replace=TRUE))
 
   #compute gene set enrichment for each bootstrap sample
 
-  res <- apply(samples, 2, FUN = function(x){
+  res <- apply(samples, 2, FUN=function(x){
     boot_dat <- cbind(pprobs,d_vec)[x,]
-    return(em_est(pprobs = boot_dat[,1], d_vec = boot_dat[,2]))
+    return(em_est(pprobs=boot_dat[,1], d_vec=boot_dat[,2]))
   })
 }

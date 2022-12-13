@@ -6,7 +6,7 @@
 \usage{
 intactGSE(
   gene_data,
-  prior_fun,
+  prior_fun = linear,
   t = NULL,
   D = NULL,
   gene_sets,
@@ -52,7 +52,7 @@ A data frame with the alpha1 estimate, standard error, z-score, p-value,
 Perform gene set enrichment estimation and inference, given TWAS scan z-scores and colocalization probabilities.
 }
 \examples{
-intactGSE(gene_data = simdat,prior_fun = linear,gene_sets = gene_set_list)
+intactGSE(gene_data = simdat,gene_sets = gene_set_list)
 intactGSE(gene_data = simdat,prior_fun = step,t = 0.45,gene_sets = gene_set_list)
 intactGSE(gene_data = simdat,prior_fun = expit,t = 0.08,D = 0.08, gene_sets = gene_set_list)
 intactGSE(gene_data = simdat,prior_fun = hybrid,t = 0.08,D = 0.08, gene_sets = gene_set_list)

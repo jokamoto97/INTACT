@@ -21,7 +21,7 @@
 #' @return The vector of posteriors.
 #' @export
 #' @examples
-#' intact(GLCP_vec=simdat$GLCP, prior_fun=linear, z_vec = simdat$TWAS_z)
+#' intact(GLCP_vec=simdat$GLCP, z_vec = simdat$TWAS_z)
 #' intact(GLCP_vec=simdat$GLCP, prior_fun=expit, z_vec = simdat$TWAS_z,t = 0.02,D = 0.09)
 #' intact(GLCP_vec=simdat$GLCP, prior_fun=step, z_vec = simdat$TWAS_z,t = 0.49)
 #' intact(GLCP_vec=simdat$GLCP, prior_fun=hybrid, z_vec = simdat$TWAS_z,t = 0.49,D = 0.05)
@@ -31,7 +31,7 @@
 
 
 
-intact <- function(GLCP_vec, prior_fun, z_vec = NULL, t = NULL, D = NULL, K = c(1,2,4,8,16),
+intact <- function(GLCP_vec, prior_fun = linear, z_vec = NULL, t = NULL, D = NULL, K = c(1,2,4,8,16),
                    twas_priors = pi1_fun(z_vec = z_vec,lambda = 0.5),
                    twas_BFs = NULL){
 

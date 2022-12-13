@@ -16,10 +16,10 @@ em_est <- function(pprobs, d_vec){
 
   alpha_start <- c(log(mean(pprobs)/(1-mean(pprobs))),0)
 
-  CONVERGED <- TRUE
+  CONVERGED<-TRUE
 
   #Compute MLEs
-  square_obj  <- try(SQUAREM::squarem(par = alpha_start,
+  square_obj <- try(SQUAREM::squarem(par = alpha_start,
                                       fixptfn = logistic_em_nopseudo,
                                       objfn = logistic_loglik,
                                       control = list(tol = 1.e-08, minimize=F, maxiter=50),
