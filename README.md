@@ -20,7 +20,7 @@ library(devtools)
 devtools::install_github("jokamoto97/INTACT")
 ```
 
-## Installing via Bioconductor
+## Installing via Bioconductor (coming soon)
 
 ```
 if (!require("BiocManager", quietly = TRUE))
