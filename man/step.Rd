@@ -2,8 +2,10 @@
 % Please edit documentation in R/step_prior.R
 \name{step}
 \alias{step}
-\title{Transform a gene colocalization probability (GLCP) to a prior to be used in the
-evidence integration procedure. There are four prior function options, including expit,
+\title{Transform a gene colocalization probability (GLCP) to a prior to be used in
+the
+evidence integration procedure. There are four prior function options,
+including expit,
 linear, step, and expit-linear hybrid.}
 \usage{
 step(GLCP, t = 0.5, u = 1)
@@ -11,7 +13,8 @@ step(GLCP, t = 0.5, u = 1)
 \arguments{
 \item{GLCP}{A gene colocalization probability}
 
-\item{t}{A hard threshold for the GLCP. Values below this number will be shrunk to zero.
+\item{t}{A hard threshold for the GLCP. Values below this number will be
+shrunk to zero.
 Default is 0.5.}
 
 \item{u}{A factor between 0 and 1 by which the prior function is scaled.}
@@ -20,8 +23,10 @@ Default is 0.5.}
 The value of the prior.
 }
 \description{
-Transform a gene colocalization probability (GLCP) to a prior to be used in the
-evidence integration procedure. There are four prior function options, including expit,
+Transform a gene colocalization probability (GLCP) to a prior to be used in
+the
+evidence integration procedure. There are four prior function options,
+including expit,
 linear, step, and expit-linear hybrid.
 }
 \examples{

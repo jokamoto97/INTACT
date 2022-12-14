@@ -2,16 +2,20 @@
 #' Used as an argument for fixptfn in the squarem function.
 #'
 #' @param d_vec A vector of gene set annotations for the genes of interest.
-#' Entries should be integer(1) if the gene is annotated and integer(0) otherwise.
-#' @param pprobs A vector of posterior probabilities for each gene estimated from the
+#' Entries should be integer(1) if the gene is annotated and integer(0)
+#' otherwise.
+#' @param pprobs A vector of posterior probabilities for each gene estimated
+#' from the
 #' intact function. Gene order should match d_vec.
-#' @param alpha A vector containing the current estimates of the enrichment parameters
+#' @param alpha A vector containing the current estimates of the enrichment
+#' parameters
 #' alpha0 and alpha1$.
 #' @return Updated estimates of alpha0 and alpha1.
 #' @export
 #' @examples
 #' logistic_em(d_vec = sample(c(0,1),1197,replace=TRUE),
-#' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear, z_vec = simdat$TWAS_z, t = 0.05),
+#' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear,
+#' z_vec = simdat$TWAS_z, t = 0.05),
 #' alpha = c(0,0))
 
 logistic_em <- function(d_vec,pprobs,alpha){
@@ -39,7 +43,7 @@ logistic_em <- function(d_vec,pprobs,alpha){
 
   #M step
 
-  C00 <- sum((1-Egamma)*(1-d_vec)) + 1/length(d_vec) #add pseudocounts == 1/(#genes)
+  C00 <- sum((1-Egamma)*(1-d_vec)) + 1/length(d_vec)
 
   C10 <- sum(Egamma*(1-d_vec)) + 1/length(d_vec)
 

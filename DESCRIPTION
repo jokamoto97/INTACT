@@ -1,26 +1,31 @@
 Package: INTACT
 Type: Package
 Title: Integrate TWAS and Colocalization Analysis for Gene Set Enrichment Analysis
-Version: 0.1.0
+Version: 0.99.0
 Authors@R: c(person("Jeffrey Okamoto", role = c("aut", "cre"),
-                     email = "jokamoto@umich.edu"),
+                     email = "jokamoto@umich.edu",
+                     comment=c(ORCID = "0000-0001-9988-1618")),
              person("Xiaoquan Wen", role = c("aut"),
-                     email = "xwen@umich.edu"))
+                     email = "xwen@umich.edu",
+                     comment=c(ORCID = "0000-0001-8990-2737")))
 Description: This package integrates colocalization probabilites from 
-    colocalization analysis with transcriptome-wide association study (TWAS) scan
-    summary statistics to implicate genes that may be biologically relevant to a 
-    complex trait. Given gene set annotations, this package can estimate gene set
-    enrichment using posterior probabilities from the TWAS-colocalization 
-    integration step.
+    colocalization analysis with transcriptome-wide association study (TWAS)
+    scan summary statistics to implicate genes that may be biologically relevant 
+    to a complex trait. The probabilistic framework implemented in this package 
+    constrains the TWAS scan z-score-based likelihood using a gene-level 
+    colocalization probability. Given gene set annotations, this package can 
+    estimate gene set enrichment using posterior probabilities from the 
+    TWAS-colocalization integration step. 
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.2.0)
 Imports: 
     SQUAREM (>= 2021.1),
     bdsmatrix (>= 1.3-4),
     numDeriv (>= 2016.8-1.1)
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
+biocViews: Bayesian, GeneSetEnrichment
+LazyData: true

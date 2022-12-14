@@ -1,16 +1,21 @@
-#' Similar to logistic_em(), but does not use pseudocounts to stablize the algorithm.
+#' Similar to logistic_em(), but does not use pseudocounts to stablize the
+#' algorithm.
 #'
 #' @param d_vec A vector of gene set annotations for the genes of interest.
-#' Entries should be integer(1) if the gene is annotated and integer(0) otherwise.
-#' @param pprobs A vector of posterior probabilities for each gene estimated from the
+#' Entries should be integer(1) if the gene is annotated and integer(0)
+#' otherwise.
+#' @param pprobs A vector of posterior probabilities for each gene estimated
+#' from the
 #' intact function. Gene order should match d_vec.
-#' @param alpha A vector containing the current estimates of the enrichment parameters
+#' @param alpha A vector containing the current estimates of the enrichment
+#' parameters
 #' alpha0 and alpha1.
 #' @return Updated estimates of alpha0 and alpha1.
 #' @export
 #' @examples
 #' logistic_em_nopseudo(d_vec = sample(c(0,1),1197,replace=TRUE),
-#' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear, z_vec = simdat$TWAS_z, t = 0.05),
+#' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear,
+#' z_vec = simdat$TWAS_z, t = 0.05),
 #' alpha = c(0,0))
 
 logistic_em_nopseudo <- function(d_vec,pprobs,alpha) {
@@ -21,7 +26,8 @@ logistic_em_nopseudo <- function(d_vec,pprobs,alpha) {
 
   pi <- mean(pprobs)
 
-  #Induced Bayes factor vector (posterior odds/prior odds), on log10 scale to prevent overflow:
+  #Induced Bayes factor vector (posterior odds/prior odds), on log10 scale to
+  #prevent overflow:
 
   log10BF <- log10(pprobs/(1-pprobs)) -log10(pi/(1-pi))
 

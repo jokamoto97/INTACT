@@ -9,12 +9,15 @@ logistic_em(d_vec, pprobs, alpha)
 }
 \arguments{
 \item{d_vec}{A vector of gene set annotations for the genes of interest.
-Entries should be integer(1) if the gene is annotated and integer(0) otherwise.}
+Entries should be integer(1) if the gene is annotated and integer(0)
+otherwise.}
 
-\item{pprobs}{A vector of posterior probabilities for each gene estimated from the
+\item{pprobs}{A vector of posterior probabilities for each gene estimated
+from the
 intact function. Gene order should match d_vec.}
 
-\item{alpha}{A vector containing the current estimates of the enrichment parameters
+\item{alpha}{A vector containing the current estimates of the enrichment
+parameters
 alpha0 and alpha1$.}
 }
 \value{
@@ -26,6 +29,7 @@ Used as an argument for fixptfn in the squarem function.
 }
 \examples{
 logistic_em(d_vec = sample(c(0,1),1197,replace=TRUE),
-pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear, z_vec = simdat$TWAS_z, t = 0.05),
+pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear,
+z_vec = simdat$TWAS_z, t = 0.05),
 alpha = c(0,0))
 }

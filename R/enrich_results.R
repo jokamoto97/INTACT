@@ -1,21 +1,29 @@
 #' Compute gene set enrichment estimates with standard errors.
 #'
-#' @param sig_lev A significance threshold for gene set enrichment hypothesis testing.
+#' @param sig_lev A significance threshold for gene set enrichment hypothesis
+#' testing.
 #' @param d_vec A vector of gene set annotations for the genes of interest.
-#' Entries should be integer(1) if the gene is annotated and integer(0) otherwise.
-#' @param pprobs A vector of posterior probabilities for each gene estimated from the
+#' Entries should be integer(1) if the gene is annotated and integer(0)
+#' otherwise.
+#' @param pprobs A vector of posterior probabilities for each gene estimated
+#' from the
 #' intact function. Gene order should match d_vec.
-#' @param SE_type A method to compute standard errors of the gene set enrichment estimates.
-#' Possible methods are "profile_likelihood," "bootstrap," and "NDS". NDS performs numerical
+#' @param SE_type A method to compute standard errors of the gene set enrichment
+#'  estimates.
+#' Possible methods are "profile_likelihood," "bootstrap," and "NDS". NDS
+#' performs numerical
 #'  differentiation of the Fisher score vector.
-#' @param boot_rep Number of bootstrap samples, if boostrap standard errors are specified
+#' @param boot_rep Number of bootstrap samples, if boostrap standard errors are
+#' specified
 #' for SE_type.
-#' @return A data frame with the alpha1 estimate, standard error, z-score, p-value,
+#' @return A data frame with the alpha1 estimate, standard error, z-score,
+#' p-value,
 #' (1-sig_lev)\% CI limits, and convergence indicator.
 #' @export
 #' @examples
 #' enrich_res(d_vec = sample(c(0,1),1197,replace=TRUE),
-#' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear, z_vec = simdat$TWAS_z, t = 0.05),
+#' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear,
+#' z_vec = simdat$TWAS_z, t = 0.05),
 #'  sig_lev = 0.05)
 
 
@@ -30,7 +38,7 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
 
   CONVERGED <- alpha[3]
 
-  alpha <- alpha[1:2]
+  alpha <- alpha[seq(1,2)]
 
   #alpha0 MLE
 
@@ -109,7 +117,8 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
 
   }
 
-  #assume that likelihood \hat\alpha1|\alpha_1 ~ N(\alpha_1, se^2(\hat alpha_1)) and
+  #assume that likelihood \hat\alpha1|\alpha_1 ~ N(\alpha_1, se^2(\hat alpha_1))
+  #and
   #alpha1 ~ N(0,1)
   # so alpha1|\hat\alpha1 ~ N(1/(1+se^2)alpha1, se^2/(se^2 + 1))
 
@@ -136,8 +145,10 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
                        SE = c(posterior_se_a1),
                        z = posterior_mean_a1/posterior_se_a1,
                        pval = 2*pnorm(-abs(posterior_mean_a1/posterior_se_a1)),
-                       CI_Leftlim = c(posterior_mean_a1 - qnorm(sig_lev/2,lower.tail = F)*posterior_se_a1),
-                       CI_Rightlim = c(posterior_mean_a1 + qnorm(sig_lev/2,lower.tail = F)*posterior_se_a1),
+                       CI_Leftlim = c(posterior_mean_a1 - qnorm(sig_lev/2,
+                                                                lower.tail = FALSE)*posterior_se_a1),
+                       CI_Rightlim = c(posterior_mean_a1 + qnorm(sig_lev/2,
+                                                                 lower.tail = FALSE)*posterior_se_a1),
                        CONVERGED = CONVERGED)
 
   return(out_df)

@@ -9,7 +9,8 @@ pi1_fun(z_vec, lambda = 0.5)
 \arguments{
 \item{z_vec}{A vector of TWAS scan z-scores.}
 
-\item{lambda}{A value between 0 and 1. The density of TWAS scan z-scores should be
+\item{lambda}{A value between 0 and 1. The density of TWAS scan z-scores
+should be
 flat at lambda. Set to 0.5 as default.}
 }
 \value{
