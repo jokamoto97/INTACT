@@ -11,3 +11,4 @@
 #' @examples
 #' data(simdat)
 "simdat"
+

@@ -25,6 +25,9 @@
 #' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear,
 #' z_vec = simdat$TWAS_z, t = 0.05),
 #'  sig_lev = 0.05)
+#' @importFrom numDeriv hessian
+#' @importFrom bdsmatrix gchol
+#' @importFrom stats pnorm qnorm
 
 
 
@@ -93,7 +96,7 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
 
       #Numerical differentiation of log likelihood function to get Hessian evaluated at MLEs
 
-      hess <- numDeriv::hessian(func = logistic_loglik,
+      hess <- hessian(func = logistic_loglik,
                                 x = alpha,
                                 method = "Richardson",
                                 d_vec = d_vec,
@@ -101,7 +104,7 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
 
       #Generalized Cholesky decomposition
 
-      cholesk <- bdsmatrix::gchol(-1*hess)
+      cholesk <- gchol(-1*hess)
 
       cov_mat <- solve(cholesk)
 
@@ -113,7 +116,7 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
   }
   if (!(SE_type %in% c("profile_likelihood","bootstrap","NDS"))){
 
-    print("Standard error type must be profile_likelihood, bootstrap, or NDS")
+    stop("Standard error type must be profile_likelihood, bootstrap, or NDS")
 
   }
 

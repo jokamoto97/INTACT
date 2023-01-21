@@ -7,9 +7,9 @@
 #'  "gene", "GLCP",
 #'  and "TWAS_z'. If the user wishes to specify TWAS Bayes factors instead of
 #'  z-scores,
-#'  use the column name TWAS_BFs. If the user wishes to specify gene-specific
+#'  use the column name "TWAS_BFs". If the user wishes to specify gene-specific
 #'  TWAS priors,
-#'  use the column name TWAS_priors.
+#'  use the column name "TWAS_priors".
 #' @param prior_fun A function to transform a colocalization probability into a
 #' prior.
 #' Options are linear, step, expit, and hybrid.
@@ -51,6 +51,123 @@
 
 intactGSE <- function(gene_data,prior_fun = linear,t = NULL,D = NULL,gene_sets,
                       sig_lev=0.05,SE_type="NDS",boot_rep=NULL){
+
+  if (!is.list(gene_sets)){
+
+    stop("gene_sets must be provided as a list object.")
+
+  }
+
+
+  if (is.data.frame(gene_data) == FALSE){
+
+    stop("gene_data must be provided a data frame object.")
+
+  }
+
+  if (!("gene" %in% colnames(gene_data))){
+
+    stop("One of the columns of gene_data must be 'gene'.")
+
+  }
+
+  if (!("TWAS_z" %in% colnames(gene_data))
+      & !("TWAS_BFs" %in% colnames(gene_data))){
+
+    stop("One column of gene_data must be either 'TWAS_z' or 'TWAS_BFs'
+         (but both should not exist together in gene_data).")
+
+  }
+
+  if (!("GLCP" %in% colnames(gene_data))){
+
+    stop("One of the columns of gene_data but be 'GLCP'")
+
+  }
+
+  if (sum(!is.na(as.numeric(gene_data$GLCP))) < length(gene_data$GLCP)){
+
+    stop("The GLCP column must be numeric")
+
+  }
+
+  if (sum(gene_data$GLCP < 0 | gene_data$GLCP > 1) != 0){
+
+    stop("The GLCP column must be probabilities between 0 and 1.")
+
+  }
+
+  if (sum(!is.na(as.numeric(gene_data$TWAS_z))) < length(gene_data$TWAS_z)){
+
+    stop("The TWAS_z column must be numeric.")
+
+  }
+
+  if (sum(!is.na(as.numeric(gene_data$TWAS_BFs))) < length(gene_data$TWAS_BFs)){
+
+    stop("The TWAS_BFs column must be numeric.")
+
+  }
+
+  if (sum(!is.na(as.numeric(gene_data$TWAS_priors))) <
+      length(gene_data$TWAS_priors)){
+
+    stop("The TWAS_priors column must be numeric.")
+
+  }
+
+
+  if (length(which(t > 1 | t < 0)) != 0){
+
+    stop("t must be a number between 0 and 1.")
+
+  }
+
+  if (length(t) > 0 & is.numeric(t) == FALSE){
+
+    stop("t must be a number between 0 and 1")
+
+  }
+
+  if (length(D) > 0 & is.numeric(D) == FALSE){
+
+    stop("D must be a number.")
+
+  }
+
+  if (!is.function(prior_fun)){
+
+    stop("Prior function must be one of: linear, step, expit, or hybrid.")
+
+  }
+
+  if (is.numeric(sig_lev) == FALSE | sig_lev > 1 | sig_lev < 0){
+
+    stop("sig_level must be a number between 0 and 1.")
+
+  }
+
+  if (!(SE_type %in% c("profile_likelihood","bootstrap","NDS"))){
+
+    stop("Standard error type must be profile_likelihood, bootstrap, or NDS")
+
+  }
+
+  if (length(boot_rep) > 0 & SE_type != "bootstrap"){
+
+    stop("Number of bootstrap samples should only be specified if the SE_type
+         is specified as bootstrap.")
+
+  }
+
+  if(length(boot_rep) > 0){
+     if(boot_rep %% 1 != 0 | boot_rep < 0){
+
+       stop("boot_rep must be a positive integer.")
+
+      }
+  }
+
 
   rst <- data.frame()
 

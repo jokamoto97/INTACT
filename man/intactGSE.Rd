@@ -23,9 +23,9 @@ colocalization
  "gene", "GLCP",
  and "TWAS_z'. If the user wishes to specify TWAS Bayes factors instead of
  z-scores,
- use the column name TWAS_BFs. If the user wishes to specify gene-specific
+ use the column name "TWAS_BFs". If the user wishes to specify gene-specific
  TWAS priors,
- use the column name TWAS_priors.}
+ use the column name "TWAS_priors".}
 
 \item{prior_fun}{A function to transform a colocalization probability into a
 prior.

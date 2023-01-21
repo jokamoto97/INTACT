@@ -8,6 +8,7 @@
 #' @export
 #' @examples
 #' pi1_fun(simdat$TWAS_z)
+#' @importFrom stats pnorm qnorm
 
 
 

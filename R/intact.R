@@ -50,14 +50,81 @@ intact <- function(GLCP_vec, prior_fun = linear, z_vec = NULL, t = NULL,
                    twas_priors = pi1_fun(z_vec = z_vec,lambda = 0.5),
                    twas_BFs = NULL){
 
+  if (sum(!is.na(as.numeric(GLCP_vec))) < length(GLCP_vec)){
+
+    stop("GLCP_vec must be a numeric vector.")
+
+  }
+
+  if (sum(GLCP_vec < 0 | GLCP_vec > 1) != 0){
+
+    stop("GLCP_vec must be probabilities between 0 and 1.")
+
+  }
+
+  if (length(GLCP_vec) != length(twas_BFs) & length(GLCP_vec) != length(z_vec)){
+
+    stop("GLCP_vec must be the same length as z_vec or twas_BFs")
+
+  }
+
+  if (sum(!is.na(as.numeric(z_vec))) < length(z_vec)){
+
+    stop("z_vec must be a numeric vector")
+
+  }
+
+  if (length(which(t > 1 | t < 0)) != 0){
+
+    stop("t must be a number between 0 and 1.")
+
+  }
+
+  if (length(t) > 0 & is.numeric(t) == FALSE){
+
+    stop("t must be a number between 0 and 1")
+
+  }
+
+  if (length(D) > 0 & is.numeric(D) == FALSE){
+
+    stop("D must be a number.")
+
+  }
+
+  if (!is.function(prior_fun)){
+
+    stop("Prior function must be one of: linear, step, expit, or hybrid.")
+
+  }
+
+  if (sum(!is.na(as.numeric(K))) < length(K)){
+
+    stop("K must be a numeric vector.")
+
+  }
+
+  if (sum(!is.na(as.numeric(twas_priors))) < length(twas_priors)){
+
+    stop("twas_priors must be a numeric vector.")
+
+  }
+
+  if (sum(!is.na(as.numeric(twas_BFs))) < length(twas_BFs)){
+
+    stop("twas_BFs must be a numeric vector.")
+
+  }
+
+
   if (length(z_vec) == 0 & length(twas_BFs) == 0){
 
-    print("TWAS z-scores or Bayes factors must be supplied.")
+    stop("TWAS z-scores or Bayes factors must be supplied.")
 
   }
   if (length(z_vec) != 0 & length(twas_BFs) != 0){
 
-    print("Choose to use TWAS z-scores OR Bayes factors, not both.")
+    stop("Choose to use TWAS z-scores OR Bayes factors, not both.")
 
   }
 
