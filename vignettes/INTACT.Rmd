@@ -106,9 +106,10 @@ colocalization results for a simulated data set `simdat`.
 
 ```{r}
 library(INTACT)
+data(simdat)
 
-rst <- INTACT::intact(GLCP_vec=INTACT::simdat$GLCP, 
-                      z_vec=INTACT::simdat$TWAS_z)
+rst <- INTACT::intact(GLCP_vec=simdat$GLCP, 
+                      z_vec=simdat$TWAS_z)
 ```
 
 The `intact` function takes a vector of gene-level colocalization 
@@ -127,17 +128,17 @@ threshold, and curvature shrinkage settings:
 
 
 ```{r}
-rst1 <- INTACT::intact(GLCP_vec=INTACT::simdat$GLCP, 
+rst1 <- INTACT::intact(GLCP_vec=simdat$GLCP, 
                        prior_fun=INTACT::expit, 
-                       z_vec = INTACT::simdat$TWAS_z,
+                       z_vec = simdat$TWAS_z,
                        t = 0.02,D = 0.09)
-rst2 <- INTACT::intact(GLCP_vec=INTACT::simdat$GLCP, 
+rst2 <- INTACT::intact(GLCP_vec=simdat$GLCP, 
                        prior_fun=INTACT::step, 
-                       z_vec = INTACT::simdat$TWAS_z,
+                       z_vec = simdat$TWAS_z,
                        t = 0.49)
-rst3 <- INTACT::intact(GLCP_vec=INTACT::simdat$GLCP, 
+rst3 <- INTACT::intact(GLCP_vec=simdat$GLCP, 
                        prior_fun=INTACT::hybrid, 
-                       z_vec = INTACT::simdat$TWAS_z,
+                       z_vec = simdat$TWAS_z,
                        t = 0.49,D = 0.05)
 ```
 
@@ -181,7 +182,8 @@ An example of how to estimate gene set enrichment in the gene sets provided in
 `gene_set_list` (using default settings) is shown below:
 
 ```{r}
-INTACT::intactGSE(gene_data = INTACT::simdat,gene_sets = INTACT::gene_set_list)
+data(gene_set_list)
+INTACT::intactGSE(gene_data = simdat,gene_sets = gene_set_list)
 ```
 
 The output of `intactGSE` includes one row per gene set and eight columns: 
@@ -199,12 +201,12 @@ Finally, we include three additional examples of how to estimate enrichment for
 the same data sets using non-default prior parameters:
 
 ```{r}
-INTACT::intactGSE(gene_data = INTACT::simdat,prior_fun = INTACT::step,
-                  t = 0.45,gene_sets = INTACT::gene_set_list)
-INTACT::intactGSE(gene_data = INTACT::simdat,prior_fun = INTACT::expit,
-                  t = 0.08,D = 0.08, gene_sets = INTACT::gene_set_list)
-INTACT::intactGSE(gene_data = INTACT::simdat,prior_fun = INTACT::hybrid,
-                  t = 0.08,D = 0.08, gene_sets = INTACT::gene_set_list)
+INTACT::intactGSE(gene_data = simdat,prior_fun = INTACT::step,
+                  t = 0.45,gene_sets = gene_set_list)
+INTACT::intactGSE(gene_data = simdat,prior_fun = INTACT::expit,
+                  t = 0.08,D = 0.08, gene_sets = gene_set_list)
+INTACT::intactGSE(gene_data = simdat,prior_fun = INTACT::hybrid,
+                  t = 0.08,D = 0.08, gene_sets = gene_set_list)
 ```
 
 

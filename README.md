@@ -10,8 +10,7 @@ The package also performs gene set enrichment estimation using probabilistic
 INTACT results and a list of pre-defined gene sets (INTACT-GSE).
 
 For a thorough description of the methodology, refer to
-https://doi.org/10.1101/2022.07.19.500651
-
+https://doi.org/10.1016/j.ajhg.2022.12.002.
 
 ## Installing via Github
 
