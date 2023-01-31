@@ -21,6 +21,7 @@
 #' (1-sig_lev)\% CI limits, and convergence indicator.
 #' @export
 #' @examples
+#' data(simdat)
 #' enrich_res(d_vec = sample(c(0,1),1197,replace=TRUE),
 #' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear,
 #' z_vec = simdat$TWAS_z, t = 0.05),

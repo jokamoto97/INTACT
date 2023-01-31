@@ -20,5 +20,6 @@ A scalar estimate for pi1.
 Estimate pi1 from TWAS scan z-scores.
 }
 \examples{
+data(simdat)
 pi1_fun(simdat$TWAS_z)
 }

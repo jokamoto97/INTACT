@@ -40,6 +40,8 @@
 #' gene_sets.
 #' @export
 #' @examples
+#' data(simdat)
+#' data(gene_set_list)
 #' intactGSE(gene_data = simdat,gene_sets = gene_set_list)
 #' intactGSE(gene_data = simdat,prior_fun = step,t = 0.45,
 #' gene_sets = gene_set_list)

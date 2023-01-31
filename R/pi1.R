@@ -7,6 +7,7 @@
 #' @return A scalar estimate for pi1.
 #' @export
 #' @examples
+#' data(simdat)
 #' pi1_fun(simdat$TWAS_z)
 #' @importFrom stats pnorm qnorm
 

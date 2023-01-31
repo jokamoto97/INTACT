@@ -61,6 +61,7 @@ Compute the posterior probability that a gene may be causal, given a gene's
 TWAS scan z-score (or Bayes factor) and colocalization probability.
 }
 \examples{
+data(simdat)
 intact(GLCP_vec=simdat$GLCP, z_vec = simdat$TWAS_z)
 intact(GLCP_vec=simdat$GLCP, prior_fun=expit, z_vec = simdat$TWAS_z,
 t = 0.02,D = 0.09)
