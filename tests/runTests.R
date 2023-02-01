@@ -1,2 +1,0 @@
-BiocGenerics:::testPackage("INTACT")
-
