@@ -48,7 +48,7 @@
 
 intact <- function(GLCP_vec, prior_fun = linear, z_vec = NULL, t = NULL,
                    D = NULL, K = c(1,2,4,8,16),
-                   twas_priors = pi1_fun(z_vec = z_vec,lambda = 0.5),
+                   twas_priors = .pi1_fun(z_vec = z_vec,lambda = 0.5),
                    twas_BFs = NULL){
 
   if (sum(!is.na(as.numeric(GLCP_vec))) < length(GLCP_vec)){

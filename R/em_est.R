@@ -8,17 +8,16 @@
 #' intact function. Gene order should match d_vec.
 #' @return Maximum likelihood estimates for alpha0 and alpha1; convergence
 #' indicator.
-#' @export
 #' @examples
 #' data(simdat)
-#' em_est(d_vec = sample(c(0,1),1197,replace=TRUE),
+#' .em_est(d_vec = sample(c(0,1),1197,replace=TRUE),
 #' pprobs = intact(GLCP_vec=simdat$GLCP,
 #' prior_fun=linear, z_vec = simdat$TWAS_z, t = 0.05))
 #' @importFrom SQUAREM squarem
 
 
 
-em_est <- function(pprobs, d_vec){
+.em_est <- function(pprobs, d_vec){
 
   alpha_start <- c(log(mean(pprobs)/(1-mean(pprobs))),0)
 
@@ -26,8 +25,8 @@ em_est <- function(pprobs, d_vec){
 
   #Compute MLEs
   square_obj <- try(SQUAREM::squarem(par = alpha_start,
-                                     fixptfn = logistic_em_nopseudo,
-                                     objfn = logistic_loglik,
+                                     fixptfn = .logistic_em_nopseudo,
+                                     objfn = .logistic_loglik,
                                      control = list(tol = 1.e-08,
                                                     minimize=FALSE,
                                                     maxiter=50),
@@ -35,8 +34,8 @@ em_est <- function(pprobs, d_vec){
                                      d_vec=d_vec),silent=TRUE)
   if("try-error" %in% class(square_obj)){
     try(square_obj <- SQUAREM::squarem(par = alpha_start,
-                                       fixptfn = logistic_em,
-                                       objfn = logistic_loglik,
+                                       fixptfn = .logistic_em,
+                                       objfn = .logistic_loglik,
                                        control = list(tol = 1.e-08,
                                                       minimize=FALSE,
                                                       maxiter=5),

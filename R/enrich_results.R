@@ -19,26 +19,25 @@
 #' @return A data frame with the alpha1 estimate, standard error, z-score,
 #' p-value,
 #' (1-sig_lev)\% CI limits, and convergence indicator.
-#' @export
 #' @examples
 #' data(simdat)
-#' enrich_res(d_vec = sample(c(0,1),1197,replace=TRUE),
+#' .enrich_res(d_vec = sample(c(0,1),1197,replace=TRUE),
 #' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear,
 #' z_vec = simdat$TWAS_z, t = 0.05),
 #'  sig_lev = 0.05)
 #' @importFrom numDeriv hessian
 #' @importFrom bdsmatrix gchol
-#' @importFrom stats pnorm qnorm
+#' @importFrom stats pnorm qnorm sd
 
 
 
 
 
-enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL){
+.enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL){
 
   #compute a1 and a0 MLEs using the SQUAREM package
 
-  alpha <- em_est(pprobs = pprobs, d_vec = d_vec)
+  alpha <- .em_est(pprobs = pprobs, d_vec = d_vec)
 
   CONVERGED <- alpha[3]
 
@@ -58,20 +57,20 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
 
     #compute a0 standard error
 
-    SE_a0 <- sqrt(a0^2 / (2*(logistic_loglik(alpha = c(a0,a1),
+    SE_a0 <- sqrt(a0^2 / (2*(.logistic_loglik(alpha = c(a0,a1),
                                              pprobs = pprobs,
                                              d_vec = d_vec) -
-                               logistic_loglik(alpha = c(0,a1),
+                               .logistic_loglik(alpha = c(0,a1),
                                                pprobs = pprobs,
                                                d_vec = d_vec))))
 
 
     #compute a1 standard error
 
-    SE_a1 <- sqrt(a1^2 / (2*(logistic_loglik(alpha = c(a0,a1),
+    SE_a1 <- sqrt(a1^2 / (2*(.logistic_loglik(alpha = c(a0,a1),
                                              pprobs = pprobs,
                                              d_vec = d_vec) -
-                               logistic_loglik(alpha = c(a0,0),
+                               .logistic_loglik(alpha = c(a0,0),
                                                pprobs = pprobs,
                                                d_vec = d_vec))))
 
@@ -79,11 +78,11 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
 
   if (SE_type == "bootstrap"){
 
-    SE_vec <- enrich_bootstrap_se(pprobs = pprobs, d_vec = d_vec, reps = boot_rep)
+    SE_mat <- .enrich_bootstrap_se(pprobs = pprobs, d_vec = d_vec, reps = boot_rep)
 
-    SE_a0 <- SE_vec[1]
+    SE_a0 <- sd(SE_mat[1,])
 
-    SE_a1 <- SE_vec[2]
+    SE_a1 <- sd(SE_mat[2,])
 
   }
 
@@ -97,7 +96,7 @@ enrich_res <- function(sig_lev, pprobs, d_vec, SE_type = "NDS", boot_rep = NULL)
 
       #Numerical differentiation of log likelihood function to get Hessian evaluated at MLEs
 
-      hess <- hessian(func = logistic_loglik,
+      hess <- hessian(func = .logistic_loglik,
                                 x = alpha,
                                 method = "Richardson",
                                 d_vec = d_vec,

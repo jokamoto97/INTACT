@@ -5,7 +5,6 @@
 #' should be
 #' flat at lambda. Set to 0.5 as default.
 #' @return A scalar estimate for pi1.
-#' @export
 #' @examples
 #' data(simdat)
 #' pi1_fun(simdat$TWAS_z)
@@ -13,7 +12,7 @@
 
 
 
-pi1_fun <- function(z_vec,lambda = 0.5){
+.pi1_fun <- function(z_vec,lambda = 0.5){
 
   p_vec <- 2*pnorm(abs(z_vec),lower.tail = FALSE)
 

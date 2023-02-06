@@ -289,7 +289,7 @@ intactGSE <- function(gene_data,prior_fun = linear,t = NULL,D = NULL,gene_sets,
 
 
 
-    out <- enrich_res(sig_lev = sig_lev,
+    out <- .enrich_res(sig_lev = sig_lev,
                       pprobs = posterior,
                       d_vec = gene_data$d_vec,
                       SE_type = SE_type,
