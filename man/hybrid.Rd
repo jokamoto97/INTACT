@@ -8,7 +8,7 @@ evidence integration procedure. There are four prior function options,
 including expit,
 linear, step, and expit-linear hybrid.}
 \usage{
-hybrid(GLCP, t = 0.05, D = 0.1, u = 1)
+hybrid(GLCP, t = 0.05, D = 0.1, u = 1, thresholding = "hard")
 }
 \arguments{
 \item{GLCP}{A gene colocalization probability}
@@ -22,6 +22,10 @@ steeper curve.
 Default is 0.1}
 
 \item{u}{A factor between 0 and 1 by which the prior function is scaled.}
+
+\item{thresholding}{An option to use hard thresholding or soft thresholding
+for the prior function. Default is "hard". For soft thresholding, set to
+"soft".}
 }
 \value{
 The value of the prior.

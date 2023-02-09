@@ -12,6 +12,9 @@
 #' steeper curve.
 #' Default is 0.1
 #' @param u A factor between 0 and 1 by which the prior function is scaled.
+#' @param thresholding An option to use hard thresholding or soft thresholding
+#' for the prior function. Default is "hard". For soft thresholding, set to
+#' "soft".
 #' @return The value of the prior.
 #' @export
 #' @examples
@@ -19,9 +22,19 @@
 
 
 
-expit <- function(GLCP,t=0.05,D = 0.1,u=1){
-  out <- ifelse(GLCP < t, 0,
+expit <- function(GLCP,t=0.05,D = 0.1,u=1,thresholding="hard"){
+  if (thresholding == "hard"){
+    out <- ifelse(GLCP < t, 0,
                 1/(1 + exp(-1*(GLCP-0.5)/D)))
+  }
+  if (thresholding == "soft"){
+    out <- ifelse(GLCP < t, 0,
+                  ifelse((1/(1 + exp(-1*(GLCP-0.5)/D)) - t) < 0,0,
+                         1/(1 + exp(-1*(GLCP-0.5)/D)) - t))
+  }
+  if (thresholding != "hard" & thresholding != "soft"){
+    stop("thresholding must be set to 'hard' or 'soft'.")
+  }
   out <- out * u
   return(out)
 }

@@ -19,12 +19,6 @@
 #' @return A data frame with the alpha1 estimate, standard error, z-score,
 #' p-value,
 #' (1-sig_lev)\% CI limits, and convergence indicator.
-#' @examples
-#' data(simdat)
-#' .enrich_res(d_vec = sample(c(0,1),1197,replace=TRUE),
-#' pprobs = intact(GLCP_vec=simdat$GLCP, prior_fun=linear,
-#' z_vec = simdat$TWAS_z, t = 0.05),
-#'  sig_lev = 0.05)
 #' @importFrom numDeriv hessian
 #' @importFrom bdsmatrix gchol
 #' @importFrom stats pnorm qnorm sd

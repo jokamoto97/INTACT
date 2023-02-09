@@ -5,9 +5,6 @@
 #' should be
 #' flat at lambda. Set to 0.5 as default.
 #' @return A scalar estimate for pi1.
-#' @examples
-#' data(simdat)
-#' pi1_fun(simdat$TWAS_z)
 #' @importFrom stats pnorm qnorm
 
 
