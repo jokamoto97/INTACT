@@ -150,6 +150,15 @@ the argument `twas_priors`. If no input is supplied, INTACT computes a
 scalar prior using the TWAS data (see the methodology reference for more 
 details).
 
+We provide an additional function `fdr_rst` that is useful if the user wishes
+to perform Bayesian FDR control on the INTACT output. An example of how to 
+apply this function at a target control level of 0.05 is shown below.
+
+```{r}
+fdr_example <- fdr_rst(rst1, alpha = 0.05)
+head(fdr_example)
+```
+
 # INTACT-GSE: Gene Set Enrichment Estimation Using INTACT results
 
 The `INTACT` package provides the `intactGSE` function to perform gene 
