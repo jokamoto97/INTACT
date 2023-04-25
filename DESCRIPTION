@@ -1,14 +1,14 @@
 Package: INTACT
 Type: Package
 Title: Integrate TWAS and Colocalization Analysis for Gene Set Enrichment Analysis
-Version: 1.0.0
+Version: 1.1.1
 Authors@R: c(person("Jeffrey Okamoto", role = c("aut", "cre"),
                      email = "jokamoto@umich.edu",
                      comment=c(ORCID = "0000-0001-9988-1618")),
              person("Xiaoquan Wen", role = c("aut"),
                      email = "xwen@umich.edu",
                      comment=c(ORCID = "0000-0001-8990-2737")))
-Description: This package integrates colocalization probabilites from 
+Description: This package integrates colocalization probabilities from 
     colocalization analysis with transcriptome-wide association study (TWAS)
     scan summary statistics to implicate genes that may be biologically relevant 
     to a complex trait. The probabilistic framework implemented in this package 
