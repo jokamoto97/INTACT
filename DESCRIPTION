@@ -1,7 +1,7 @@
 Package: INTACT
 Type: Package
 Title: Integrate TWAS and Colocalization Analysis for Gene Set Enrichment Analysis
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(person("Jeffrey Okamoto", role = c("aut", "cre"),
                      email = "jokamoto@umich.edu",
                      comment=c(ORCID = "0000-0001-9988-1618")),
