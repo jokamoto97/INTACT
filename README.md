@@ -19,7 +19,7 @@ library(devtools)
 devtools::install_github("jokamoto97/INTACT")
 ```
 
-## Installing via Bioconductor (coming soon)
+## Installing via Bioconductor
 
 ```
 if (!require("BiocManager", quietly = TRUE))
@@ -30,7 +30,7 @@ BiocManager::install("INTACT")
 
 ## Examples
 
-Here is an example of how to integrate colocalization probabilites and TWAS 
+Here is an example of how to integrate colocalization probabilities and TWAS 
 z-statistics for a simulated data set ```simdat```:
 
 ```
