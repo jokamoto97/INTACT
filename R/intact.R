@@ -141,16 +141,23 @@ intact <- function(GLCP_vec, prior_fun = linear, z_vec = NULL, t = NULL,
     },
     z_vec=z_vec)
 
-
     #Perform Bayesian model averaging using log sum exp trick
 
-    bf_log10 <- apply(bf_grid_log10,FUN=function(bf_vec){
-      x_star <- max(bf_vec)
-      logsumexp <- x_star + log10(sum(10^(bf_vec-x_star)))
-      out <- logsumexp - log10(length(bf_vec))
-      return(out)
-    },
-    MARGIN = 1)
+    if(!(is.null(dim(bf_grid_log10)))){ #2+ genes are being analyzed
+      bf_log10 <- apply(bf_grid_log10,FUN=function(bf_vec){
+        x_star <- max(bf_vec)
+        logsumexp <- x_star + log10(sum(10^(bf_vec-x_star)))
+        out <- logsumexp - log10(length(bf_vec))
+        return(out)
+      },
+      MARGIN = 1)
+    }
+
+    if(is.null(dim(bf_grid_log10))){ #only 1 gene is being analyzed
+      x_star <- max(bf_grid_log10)
+      logsumexp <- x_star + log10(sum(10^(bf_grid_log10-x_star)))
+      bf_log10 <- logsumexp - log10(length(bf_grid_log10))
+    }
 
     #Compute prior from GLCPs
 
