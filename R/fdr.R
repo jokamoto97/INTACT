@@ -23,7 +23,7 @@ fdr_rst<-function(posterior, alpha=0.05){
 
   thresh = 1 - lfdr_sort[max(which(FDR<=alpha))]
 
-  rej_gene = as.numeric(gene_num[which(posterior>thresh)])
+  rej_gene = as.numeric(gene_num[which(posterior>=thresh)])
 
   out_tmp <- rep(FALSE,length(posterior))
 
