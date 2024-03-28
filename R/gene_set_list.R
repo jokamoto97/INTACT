@@ -10,6 +10,7 @@
 #'   \item{gene set 2}{gene set with 200 members.}
 #'   ...
 #' }
+#' @return A list with two items:
 #' @examples
 #' data(gene_set_list)
 "gene_set_list"

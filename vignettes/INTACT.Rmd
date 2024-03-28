@@ -28,7 +28,7 @@ toc_float: true
 
 # Installation
 
-To install this package, run the following code chunk (in R 4.2 or later):
+To install this package, run the following code chunk (in R 4.3 or later):
 
 ```{r,eval=FALSE}
 if (!require("BiocManager", quietly = TRUE))
@@ -218,6 +218,122 @@ INTACT::intactGSE(gene_data = simdat,prior_fun = INTACT::hybrid,
                   t = 0.08,D = 0.08, gene_sets = gene_set_list)
 ```
 
+# Integrating Additional Gene Product Data
+
+Although INTACT achieves higher power than colocalization alone and better 
+false discovery control than TWAS alone, it is not robust to scenarios in which 
+a causal gene impacts the complex trait, but not through gene expression. 
+Motivated by recent protein and splicing QTL studies suggesting these scenarios 
+are quite common, we introduce Multi-INTACT, an empirical Bayes framework that 
+extends the INTACT model to jointly consider multiple molecular gene products 
+(e.g. encoded RNA transcript levels and protein levels). Multi-INTACT comprises
+two stages: a scanning stage and model selection stage. The scanning stage 
+integrates GWAS results and QTL data for two or more molecular gene products 
+to implicate putative causal genes. The model selection stage aims to determine
+which of the measured molecular gene products for a gene implicated in the 
+scanning stage directly affects the complex trait-of-interest. We employ a 
+Bayesian procedure to compare possible underlying molecular mechanisms using 
+probabilistic evidence. While leveraging additional molecular gene product 
+information, Multi-INTACT shares strengths with INTACT such as computational 
+efficiency and probabilistic uncertainty quantification for causal gene 
+nomination. This implementation of Multi-INTACT can jointly consider up to 
+2 molecular gene products at a time.
+
+<!-- For a full description of the Multi-INTACT algorithm, refer to [] -->
+
+# Included Data Sets to Demonstrate Multi-INTACT Functionality
+
+To illustrate the functionality of the Multi-INTACT functions, we include a 
+simulated data set `multi_simdat`. See the methodology reference for an 
+explanation of the simulation design. The data is organized as a 1197 row by 
+6 column data frame, where rows correspond to genes, the `GLCP_1` and `GLCP_2` 
+columns provide pairwise gene-level colocalization probabilities (between the 
+complex trait/gene expression and complex trait/protein levels, respectively),
+`z_1` and `z_2` columns provide TWAS and protein-TWAS (PWAS) z-scores,
+respectively, and `chisq` provides multivariate Wald chi-square test statistics 
+from the joint regression of the complex trait on predicted protein and 
+expression levels.
+
+If individual-level data are available, recommend using the function `wald.test` 
+from the `aod` package in order to generate the chi-square test statistics. If 
+individual-level data are not available, it is still possible to approximate the 
+statistic. We include simulated data sets `ld_sumstats`, `exprwt_sumstats`,
+`protwt_sumstats`, `z_sumstats`, to show how to approximate the multivariate 
+Wald statistic using summary-level data.
+
+# Estimating the Chi-square Statistic From Summary-level Data
+
+To estimate the chi-square statistic, for each candidate gene, we will need a 
+set of SNPs used to predict each gene product level, an estimated linkage 
+disequilibrium (LD) correlation matrix for these SNPs, and prediction weights
+for each gene product type, and TWAS z-scores for each gene product type. 
+The example data `ld_sumstats` contains the LD matrix, `exprwt_sumstats` and
+`protwt_sumstats` contain TWAS and PWAS prediction weights, and `z_sumstats` 
+contains the TWAS and PWAS z-scores for the candidate gene.
+
+To estimate the chi-square statistic, run:
+
+```{r}
+data(z_sumstats)
+data(exprwt_sumstats)
+data(protwt_sumstats)
+data(ld_sumstats)
+
+INTACT::chisq_sumstat(z_vec = z_sumstats,
+              w = cbind(protwt_sumstats,exprwt_sumstats),
+              R = ld_sumstats)
+```
+
+We highly recommend running this step in parallel if you have many candidate 
+gene-trait pairs.
+
+# Running Multi-INTACT
+
+Once chi-square statistics, pairwise colocalization data, and marginal 
+z-scores for each gene product are available, we are ready to run Multi-INTACT.
+To compute gene probabilities of putative causality (GPPCs) and gene 
+product relevance probabilities (GPRPs), run:
+
+```{r}
+data(multi_simdat)
+
+rst <- INTACT::multi_intact(df = multi_simdat)
+```
+
+The output from the `multi_intact` function is a list object containing 3 items.
+The first is a data frame with the GPPC, GPRP for expression (`GPRP_1`), and for 
+protein (`GPRP_2`). The second is a numeric 3-vector containing conditional 
+prior parameter estimates (denoted $h_e,h_p,h_{e+p}$ in the methodology 
+reference). The third is a Boolean indicating whether the EM algorithm 
+converged. The a preview of the output is shown below:
+```{r,echo=FALSE}
+print(head(rst[[1]]))
+print(rst[[2]])
+print(rst[[3]])
+```
+
+
+If you want to see the model posteriors for expression-only 
+(`posterior_1`), protein-only (`posterior_2`), and expression-and-protein 
+(`posterior_12`), run:
+
+
+```{r}
+rst <- INTACT::multi_intact(df = multi_simdat,return_model_posteriors = TRUE)
+```
+```{r,echo=FALSE}
+print(head(rst[[1]]))
+```
+
+If you only want to compute GPPCs (and not run the EM algorithm to compute 
+GPRPs), run:
+
+```{r}
+rst <- INTACT::multi_intact(df = multi_simdat,em_algorithm = FALSE)
+```
+```{r,echo=FALSE}
+print(head(rst))
+```
 
 Session information is included below:
 

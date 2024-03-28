@@ -16,6 +16,9 @@ A list with two items:
 \usage{
 gene_set_list
 }
+\value{
+A list with two items:
+}
 \description{
 A list object containing two elements. Each is a character list of gene
 names.

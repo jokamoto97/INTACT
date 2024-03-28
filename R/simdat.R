@@ -8,6 +8,7 @@
 #'   \item{TWAS_z}{TWAS z-score}
 #'   ...
 #' }
+#' @return A data frame with 1197 rows and 3 variables
 #' @examples
 #' data(simdat)
 "simdat"

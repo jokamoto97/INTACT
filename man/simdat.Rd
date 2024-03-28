@@ -16,6 +16,9 @@ A data frame with 1197 rows and 3 variables:
 \usage{
 simdat
 }
+\value{
+A data frame with 1197 rows and 3 variables
+}
 \description{
 A data set containing GLCP and TWAS z-score for 1197 simulated genes.
 }

@@ -37,8 +37,8 @@ z-statistics for a simulated data set ```simdat```:
 intact(GLCP_vec=simdat$GLCP, z_vec = simdat$TWAS_z)
 ```
 
-To perform gene set enrichment analysis using simdat and pre-defined gene set 
-list ```gene_set_list```, run
+To perform gene set enrichment analysis using ```simdat``` and pre-defined gene 
+set list ```gene_set_list```, run
 
 ```
 intactGSE(gene_data = simdat, gene_sets = gene_set_list)
